@@ -3,9 +3,13 @@ import os
 from random import shuffle
 import random
 from PIL import Image, ImageDraw, ImageFont
+import base64
+import requests
+import json
 
+@hook.api_key('imgur')
 @hook.command("comic")
-def comic(paraml, input=None, db=None, bot=None, conn=None):
+def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     #print os.getcwd()
     if len(paraml) == 0:
         paraml = input.chan
@@ -40,7 +44,15 @@ def comic(paraml, input=None, db=None, bot=None, conn=None):
     fname = ''.join([random.choice("fartpoo42069") for i in range(16)]) + ".jpg"
 
     make_comic(chars, panels).save(os.path.join(bot.config['savePath'], fname), quality=85)
-    return bot.config['urlPath'] + fname
+    API_KEY = api_key
+    image_path = os.path.join(bot.config['savePath'],fname)
+    headers = {'Authorization': 'Client-ID '+API_KEY}
+    fh = open(image_path, 'rb');
+    base64img = base64.b64encode(fh.read())
+    url="https://api.imgur.com/3/upload.json"
+    r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
+    val=json.loads(r.text)
+    return val['data']['link']
 
 
 def wrap(st, font, draw, width):

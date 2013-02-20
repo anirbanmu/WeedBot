@@ -24,8 +24,7 @@ if not os.path.exists('config'):
           "acls": {},
           "api_keys": {},
           "prefix_char":"!",
-          "savePath":"/var/www/pathhere",
-          "urlPath":"http://www.google.com/",
+          "savePath":"/var/tmp/pathhere",
           "buffer_size":10,
           "censored_strings":
           [

@@ -174,7 +174,7 @@ def main(conn, out):
 
         value = (datetime.now(), inp.nick, inp.msg)
 
-        if not inp.msg.startswith('.') and not inp.msg.startswith('!') and not inp.nick == 'catteproject' and not inp.nick == 'weedbot':
+        if not inp.msg.startswith('.') and not inp.msg.startswith('!') and not inp.nick == 'catteproject' and not inp.nick == 'weedbot' and not inp.nick == 'finnbawt':
             bot.mcache[key].append(value)
             if 'buffer_size' not in bot.config:
                 bot.config['buffer_size'] = 30
