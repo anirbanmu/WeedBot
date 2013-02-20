@@ -17,4 +17,4 @@
 Weedbot runs on Python 2.6. Many of the plugins require [[http://codespeak.net/lxml/|lxml]]. It is developed on Ubuntu 9.10 with Python 2.6.4. It will run on Linux and windows.
 It also requires:
 * PIL
-* pyimgurs
+* Requests
