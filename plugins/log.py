@@ -32,7 +32,7 @@ irc_color_re = re.compile(r'(\x03(\d+,\d+|\d)|[\x0f\x02\x16\x1f])')
 
 def get_log_filename(dir, server, chan):
     return os.path.join(dir, 'log', gmtime('%Y'), server,
-            (gmtime('%%s.%m-%d.log') % chan).lower())
+            gmtime('%%s.%m-%d.log') % chan).lower()
 
 
 def gmtime(format):
@@ -86,8 +86,8 @@ def get_log_fd(dir, server, chan):
 def log(paraml, input=None, bot=None):
     timestamp = gmtime(timestamp_format)
 
-    fd = get_log_fd(bot.persist_dir, input.server, 'raw')
-    fd.write(timestamp + ' ' + input.raw + '\n')
+    #fd = get_log_fd(bot.persist_dir, input.server, 'raw')
+    #fd.write(timestamp + ' ' + input.raw + '\n')
 
     if input.command == 'QUIT':  # these are temporary fixes until proper
         input.chan = 'quit'      # presence tracking is implemented
@@ -99,8 +99,8 @@ def log(paraml, input=None, bot=None):
     if beau == '':  # don't log this
         return
 
-    if input.chan:
-        fd = get_log_fd(bot.persist_dir, input.server, input.chan)
-        fd.write(timestamp + ' ' + beau + '\n')
+    #if input.chan:
+    #    fd = get_log_fd(bot.persist_dir, input.server, input.chan)
+    #    fd.write(timestamp + ' ' + beau + '\n')
 
     print timestamp, input.chan, beau.encode('utf8', 'ignore')

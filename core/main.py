@@ -1,6 +1,7 @@
 import thread
 import traceback
-
+import random
+from datetime import datetime, timedelta
 
 thread.stack_size(1024 * 512)  # reduce vm size
 
@@ -22,6 +23,8 @@ class Input(dict):
             else:
                 conn.msg(chan, nick + ': ' + msg)
 
+        def replynonick(msg):
+            conn.msg(chan, msg)
         def pm(msg):
             conn.msg(nick, msg)
 
@@ -38,7 +41,7 @@ class Input(dict):
                     params=params, nick=nick, user=user, host=host,
                     paraml=paraml, msg=msg, server=conn.server, chan=chan,
                     notice=notice, say=say, reply=reply, pm=pm, bot=bot,
-                    me=me, set_nick=set_nick, lastparam=paraml[-1])
+                    me=me, set_nick=set_nick, lastparam=paraml[-1], replynonick=replynonick)
 
     # make dict keys accessible as attributes
     def __getattr__(self, key):
@@ -50,7 +53,10 @@ class Input(dict):
 
 def run(func, input):
     args = func._args
-
+    r=random.random()
+    if r >= func._rchance:
+        return
+    
     if 'inp' not in input:
         input.inp = input.paraml
 
@@ -67,7 +73,10 @@ def run(func, input):
     else:
         out = func(input.inp)
     if out is not None:
-        input.reply(unicode(out))
+        if func._nonick:
+            input.replynonick(unicode(out))
+        else:
+            input.reply(unicode(out))
 
 
 def do_sieve(sieve, bot, input, func, type, args):
@@ -153,7 +162,24 @@ def match_command(command):
 
 def main(conn, out):
     inp = Input(conn, *out)
+    if inp.command == 'PRIVMSG':
+        key = (inp.chan, inp.conn)
+        try:
+            bot.mcache
+        except:
+            bot.mcache = dict()
 
+        if key not in bot.mcache:
+            bot.mcache[key] = []
+
+        value = (datetime.now(), inp.nick, inp.msg)
+
+        if not inp.msg.startswith('.') and not inp.msg.startswith('!') and not inp.nick == 'catteproject' and not inp.nick == 'weedbot':
+            bot.mcache[key].append(value)
+            if 'buffer_size' not in bot.config:
+                bot.config['buffer_size'] = 30
+
+            bot.mcache[key] = bot.mcache[key][-1*bot.config['buffer_size']:]
     # EVENTS
     for func, args in bot.events[inp.command] + bot.events['*']:
         dispatch(Input(conn, *out), "event", func, args)
@@ -161,9 +187,9 @@ def main(conn, out):
     if inp.command == 'PRIVMSG':
         # COMMANDS
         if inp.chan == inp.nick:  # private message, no command prefix
-            prefix = r'^(?:[.]?|'
+            prefix = r'^(?:[' + bot.config['prefix_char'] + ']?|'
         else:
-            prefix = r'^(?:[.]|'
+            prefix = r'^(?:[' + bot.config['prefix_char'] + ']|'
 
         command_re = prefix + inp.conn.nick
         command_re += r'[:,]+\s+)(\w+)(?:$|\s+)(.*)'

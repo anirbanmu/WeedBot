@@ -23,6 +23,10 @@ if not os.path.exists('config'):
           "disabled_commands": [],
           "acls": {},
           "api_keys": {},
+          "prefix_char":"!",
+          "savePath":"/var/www/pathhere",
+          "urlPath":"http://www.google.com/",
+          "buffer_size":10,
           "censored_strings":
           [
             "DCC SEND",

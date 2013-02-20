@@ -36,6 +36,10 @@ def _hook_add(func, add, name=''):
 
     if not hasattr(func, '_thread'):  # does function run in its own thread?
         func._thread = False
+    if not hasattr(func, "_nonick"):
+        func._nonick = False
+    if not hasattr(func, "_rchance"):
+        func._rchance = 1.0
 
 
 def sieve(func):
@@ -91,6 +95,9 @@ def api_key(key):
         return func
     return annotate
 
+def nonick(func):
+    func._nonick = True
+    return func
 
 def regex(regex, flags=0, **kwargs):
     args = kwargs
@@ -106,3 +113,9 @@ def regex(regex, flags=0, **kwargs):
         raise ValueError("regex decorators require a regex to match against")
     else:
         return regex_wrapper
+
+def randreply(chance):
+    def rand_wrapper(func):
+        func._rchance = chance
+        return func
+    return rand_wrapper
