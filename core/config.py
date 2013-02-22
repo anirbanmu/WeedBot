@@ -22,7 +22,7 @@ if not os.path.exists('config'):
           "disabled_plugins": [],
           "disabled_commands": [],
           "acls": {},
-          "api_keys": {},
+          "api_keys": {"imgur":"ImgUrKeyHere"},
           "prefix_char":"!",
           "savePath":"/var/tmp/pathhere",
           "buffer_size":10,
