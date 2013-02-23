@@ -25,6 +25,7 @@ if not os.path.exists('config'):
           "api_keys": {"imgur":"ImgUrKeyHere"},
           "prefix_char":"!",
           "savePath":"/var/tmp/pathhere",
+          "urlPath":"http://www.google.com/",
           "buffer_size":10,
           "censored_strings":
           [
