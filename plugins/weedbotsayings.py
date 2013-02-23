@@ -12,67 +12,67 @@ gi = unicode("ï½·ï¾€ï¾œã‚¡*ï½¥ã‚œï¾Ÿï½¥*:.ï½¡..ï�
 
 @hook.nonick
 @hook.regex(*("cum", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def cum(inp):
     return cs
 
 @hook.nonick
 @hook.regex(*("mitten", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def mitten(inp):
     return ms
 
 @hook.nonick
 @hook.regex(*("crap", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def crap(inp):
     return cp
 
 @hook.nonick
 @hook.regex(*("ass", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def ass(inp):
     return cp
 
 @hook.nonick
 @hook.regex(*("\\bftw\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def ftw(inp):
     return ft
 
 @hook.nonick
 @hook.regex(*("\\bown(s|ed)?\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def owns(inp):
     ons = unicode("owns "*random.randint(1, 3) + "OWNS "*random.randint(1, 3) + "o-(' 'Q)")
     return ons
 
 @hook.nonick
 @hook.regex(*("\\bapple\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def apple(inp):
     return ap
 
 @hook.nonick
 @hook.regex(*("weedbot", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def weedbotname(inp):
     return random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"])
 
 @hook.nonick
 @hook.regex(*("\\bdad\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def dad(inp):
     return da
 
 @hook.nonick
 @hook.regex(*("\\b(mad|angry)\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def mad(inp):
     return ta
 
 @hook.nonick
 @hook.regex(*("\\bgirl\\b", re.I))
-@hook.randreply(0.1)
+@hook.randreply(0.0)
 def girl(inp):
     return gi

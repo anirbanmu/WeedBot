@@ -6,45 +6,64 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
+import praw
 
 
+def getObjectFromLink(r,url):
+    obj=praw.objects.Submission.from_url(r, url)
+    if len(url.split('/'))==6:
+        return obj
+    else:
+        return obj.comments[0]
+    
 @hook.api_key('imgur')
-@hook.command("comic")
-def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
+@hook.command("comicreddit")
+def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     #print os.getcwd()
+    
+    
+    r = praw.Reddit(user_agent='redditComicBot')
+    
+    
     if len(paraml) == 0:
-        paraml = input.chan
-    msgs = bot.mcache[(paraml,conn)]
+        return "Please request a URL"
+    tmp=paraml
+    x= getObjectFromLink(r,paraml)
+    #print tmp
+    #print x
+    comments=[x]
+    
+    cnt=0
+    while cnt < 10:
+        #print x
+        if(len(x.replies)==0):
+            break
+        x=x.replies[0]
+        comments+=[x]
+    
+    print comments
     sp = 0
     chars = set()
 
-    for i in xrange(len(msgs)-1, 0, -1):
-        sp += 1
-        diff = msgs[i][0] - msgs[i-1][0]
-        chars.add(msgs[i][1])
-        if sp > 10 or diff.total_seconds() > 120 or len(chars) > 3:
-            break
-
+    for comment in comments:
+        chars.add(comment.author.name)
     #print sp, chars
-    msgs = msgs[-1*sp:]
 
     panels = []
     panel = []
 
-    for (d, char, msg) in msgs:
-        if len(panel) == 2 or len(panel) == 1 and panel[0][0] == char:
+    for msg in comments:
+        if len(panel) == 2 or len(panel) == 1 and panel[0][0] == msg.author.name:
             panels.append(panel)
             panel = []
-        if msg.count('\x01') >= 2:
-            ctcp = msg.split('\x01', 2)[1].split(' ', 1)
-            if len(ctcp) == 1:
-                ctcp += ['']
-            if ctcp[0]=='ACTION':
-                msg='*'+ctcp[1]+'*'
-        panel.append((char, msg))
+        panel.append((msg.author.name, getattr(msg, "body")))
 
     panels.append(panel)
-
+    for comment in comments:
+        del comment
+    del comments
+    del r
+    del x
     print repr(chars)
     print repr(panels)
 
@@ -58,7 +77,6 @@ def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     base64img = base64.b64encode(fh.read())
     url="https://api.imgur.com/3/upload.json"
     r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
-    print r.text
     val=json.loads(r.text)
     return val['data']['link']
 
