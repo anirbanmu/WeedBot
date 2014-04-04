@@ -26,6 +26,8 @@ if not os.path.exists('config'):
           "prefix_char":"!",
           "savePath":"/var/tmp/pathhere",
           "urlPath":"http://www.google.com/",
+		  "redditUsername":"weeedbot",
+		  "redditPassword":"redditpassword",
           "buffer_size":10,
           "censored_strings":
           [

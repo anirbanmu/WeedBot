@@ -23,7 +23,7 @@ def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     
     
     r = praw.Reddit(user_agent='redditComicBot')
-    
+    r.login(bot.config['redditUsername'],bot.config['redditPassword'])
     
     if len(paraml) == 0:
         return "Please request a URL"
