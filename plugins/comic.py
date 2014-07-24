@@ -12,8 +12,10 @@ import json
 @hook.command("comic")
 def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     #print os.getcwd()
-    if len(paraml) == 0:
-        paraml = input.chan
+    #Removed for channel leaks
+    #if len(paraml) == 0:
+        #paraml = input.chan
+    paraml = input.chan
     msgs = bot.mcache[(paraml,conn)]
     sp = 0
     chars = set()
