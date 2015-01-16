@@ -1,4 +1,6 @@
-= Weedbot =
+= WeedbotRefresh =
+
+WeedbotRefresh is a fork of the original Weedbot, redesigned to run on Python 3 and the CloudBot Core (a fork of SkyBot itself)
 
 ==Goals==
 * simplicity
@@ -14,7 +16,7 @@
 * Easy plugin development with automatic reloading and a simple hooking API.
 
 ==Requirements==
-Weedbot runs on Python 2.6. Many of the plugins require [[http://codespeak.net/lxml/|lxml]]. It is developed on Ubuntu 9.10 with Python 2.6.4. It will run on Linux and windows.
+Weedbot runs on Python 3. Many of the plugins require [[http://codespeak.net/lxml/|lxml]]. It is developed on Mac OS X Yosemite 10.10 with Python 3.4.0. It is fully compatible with Linux and Windows platforms.
 It also requires:
 * PIL
 * Requests
