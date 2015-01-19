@@ -135,8 +135,6 @@ def fitimg(img, (width, height)):
     return img.resize((int(l[0]), int(l[1])), Image.ANTIALIAS)
 
 def make_comic(chars, panels):
-    #filenames = os.listdir(os.path.join(os.getcwd(), 'chars'))
-
     panelheight = 300
     panelwidth = 450
 
@@ -149,18 +147,15 @@ def make_comic(chars, panels):
     for ch, f in chars:
         charmap[ch] = Image.open(f)
 
-    #print charmap
-
-
     imgwidth = panelwidth
     imgheight = panelheight * len(panels)
 
-    bg = Image.open("backgrounds/beach-paradise-beach-desktop.jpg")
+    bg = Image.open(background_file)
 
     im = Image.new("RGBA", (imgwidth, imgheight), (0xff, 0xff, 0xff, 0xff))
-    font = ImageFont.truetype("plugins/COMICBD.TTF", 14)
+    font = ImageFont.truetype(font_file, font_size)
 
-    for i in xrange(len(panels)):
+    for i in range(len(panels)):
         pim = Image.new("RGBA", (panelwidth, panelheight), (0xff, 0xff, 0xff, 0xff))
         pim.paste(bg, (0, 0))
         draw = ImageDraw.Draw(pim)
@@ -177,11 +172,11 @@ def make_comic(chars, panels):
             texth += st2h + 10 + 5
 
         maxch = panelheight - texth
-        im1 = fitimg(charmap[panels[i][0][0]], (2*panelwidth/5.0-10, maxch))
+        im1 = fitimg(charmap[panels[i][0][0]], 2*panelwidth/5.0-10, maxch)
         pim.paste(im1, (10, panelheight-im1.size[1]), im1)
 
         if len(panels[i]) == 2:
-            im2 = fitimg(charmap[panels[i][1][0]], (2*panelwidth/5.0-10, maxch))
+            im2 = fitimg(charmap[panels[i][1][0]], 2*panelwidth/5.0-10, maxch)
             im2 = im2.transpose(Image.FLIP_LEFT_RIGHT)
             pim.paste(im2, (panelwidth-im2.size[0]-10, panelheight-im2.size[1]), im2)
 
