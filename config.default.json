@@ -1,7 +1,7 @@
 {
   "resources": {
     "background": "backgrounds/beach-paradise-beach-desktop.jpg",
-    "font": "fonts/comic.ttf",
+    "font": "fonts/ComicBD.ttf",
     "font_size": 14,
     "buffer_size": 30,
     "private_save_path": "/var/tmp/pathhere",

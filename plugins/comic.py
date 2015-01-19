@@ -41,7 +41,10 @@ def track(event, conn):
 @hook.command("comic")
 def comic(conn, chan):
     text = chan
-    msgs = mcache[(text, conn.name)]
+    try:
+        msgs = mcache[(text, conn.name)]
+    except KeyError:
+        return "Not Enough Messages."
     sp = 0
     chars = set()
 
@@ -78,7 +81,7 @@ def comic(conn, chan):
     image_comic = BytesIO()
 
     # Save the completed composition to a PNG in memory
-    make_comic(chars, panels).save(image_comic, format="JPG", quality=85)
+    make_comic(chars, panels).save(image_comic, format="JPEG", quality=85)
 
     # Get API Key, upload the comic to imgur
     headers = {'Authorization': 'Client-ID ' + api_key}
