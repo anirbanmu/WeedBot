@@ -12,69 +12,58 @@ da = "Î¾ ãƒ»_>ãƒ»ï¼‰don't touch dad's diskettes"
 ta = "(â•¯Â°â–¡Â°ï¼‰â•¯ï¸µ â”»â”â”» i'm so fuckin mad right now"
 gi = "ï½·ï¾€ï¾œã‚¡*ï½¥ã‚œï¾Ÿï½¥*:.ï½¡..ï½¡.:*ï½¥ã‚œ(nâ€˜âˆ€â€˜)Î·ï¾Ÿï½¥*:.ï½¡. .ï½¡.:*ï½¥ã‚œï¾Ÿï½¥* !!!!! oh my god i'm a girl!!!"
 
-@hook.nonick
+
 @hook.regex(*("cum", re.I))
-@hook.randreply(0.0)
-def cum(text):
-    return cs
+def cum(bot):
+    bot.reply(cs)
 
-@hook.nonick
+
 @hook.regex(*("mitten", re.I))
-@hook.randreply(0.0)
-def mitten(text):
-    return ms
+def mitten(bot):
+    bot.reply(ms)
 
-@hook.nonick
+
 @hook.regex(*("crap", re.I))
-@hook.randreply(0.0)
-def crap(text):
-    return cp
+def crap(bot):
+    bot.reply(cp)
 
-@hook.nonick
+
 @hook.regex(*("ass", re.I))
-@hook.randreply(0.0)
-def ass(text):
-    return cp
+def ass(bot):
+    bot.reply(cp)
 
-@hook.nonick
+
 @hook.regex(*("\\bftw\\b", re.I))
-@hook.randreply(0.0)
-def ftw(text):
-    return ft
+def ftw(bot):
+    bot.reply(ft)
 
-@hook.nonick
+
 @hook.regex(*("\\bown(s|ed)?\\b", re.I))
-@hook.randreply(0.0)
-def owns(text):
+def owns(bot):
     ons = "owns " * random.randint(1, 3) + "OWNS " * random.randint(1, 3) + "o-(' 'Q)"
-    return ons
+    bot.reply(ons)
 
-@hook.nonick
+
 @hook.regex(*("\\bapple\\b", re.I))
-@hook.randreply(0.0)
-def apple(text):
-    return ap
+def apple(bot):
+    bot.reply(ap)
 
-@hook.nonick
+
 @hook.regex(*("weedbot", re.I))
-@hook.randreply(0.0)
-def weedbotname(text):
-    return random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"])
+def weedbotname(bot):
+    bot.reply(random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"]))
 
-@hook.nonick
+
 @hook.regex(*("\\bdad\\b", re.I))
-@hook.randreply(0.0)
-def dad(text):
-    return da
+def dad(bot):
+    bot.reply(da)
 
-@hook.nonick
+
 @hook.regex(*("\\b(mad|angry)\\b", re.I))
-@hook.randreply(0.0)
-def mad(text):
-    return ta
+def mad(bot):
+    bot.reply(ta)
 
-@hook.nonick
+
 @hook.regex(*("\\bgirl\\b", re.I))
-@hook.randreply(0.0)
-def girl(text):
-    return gi
+def girl(bot):
+    bot.reply(gi)
