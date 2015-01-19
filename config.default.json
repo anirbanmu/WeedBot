@@ -5,7 +5,7 @@
     "font_size": 14,
     "buffer_size": 30,
     "private_save_path": "/var/tmp/pathhere",
-    "private_url_prefix": "http://example.com/myprefix"
+    "private_url_prefix": "http://example.com/myprefix/"
   },
   "connections": [
     {

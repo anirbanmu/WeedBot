@@ -40,7 +40,10 @@ def track(event, conn):
 @hook.command("comicnoup")
 def comic(conn, chan):
     text = chan
-    msgs = mcache[(text, conn.name)]
+    try:
+        msgs = mcache[(text, conn.name)]
+    except KeyError:
+        return "Not Enough Messages."
     sp = 0
     chars = set()
 
