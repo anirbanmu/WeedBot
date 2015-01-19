@@ -1,4 +1,6 @@
-from util import hook
+# WeedBot Refresh's comic.py - based on RoboCop 2's comic.py
+
+from cloudbot import hook
 import os
 from random import shuffle
 import random
@@ -6,28 +8,39 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
+import time
+from datetime import datetime, timedelta
+
+from cloudbot.event import EventType
+
+mcache = dict()
+
+@hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
+def track(event, db, conn):
+    key = (event.chan, conn.name)
+    if key not in mcache:
+        mcache[key] = []
+
+    value = (datetime.now(), event.nick, str(event.content))
+    mcache[key].append(value)
+    buffer_size = 30
+    mcache[key] = mcache[key][-1*buffer_size:]
 
 
-@hook.api_key('imgur')
 @hook.command("comic")
-def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
-    #print os.getcwd()
-    #Removed for channel leaks
-    #if len(paraml) == 0:
-        #paraml = input.chan
-    paraml = input.chan
-    msgs = bot.mcache[(paraml,conn)]
+def comic(text, conn, chan):
+    text = chan
+    msgs = mcache[(text, conn.name)]
     sp = 0
     chars = set()
 
-    for i in xrange(len(msgs)-1, 0, -1):
+    for i in range(len(msgs)-1, 0, -1):
         sp += 1
         diff = msgs[i][0] - msgs[i-1][0]
         chars.add(msgs[i][1])
         if sp > 10 or diff.total_seconds() > 120 or len(chars) > 3:
             break
 
-    #print sp, chars
     msgs = msgs[-1*sp:]
 
     panels = []
@@ -47,20 +60,19 @@ def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
 
     panels.append(panel)
 
-    print repr(chars)
-    print repr(panels)
-
+    print(repr(chars))
+    print(repr(panels))
     fname = ''.join([random.choice("fartpoo42069") for i in range(16)]) + ".jpg"
-
-    make_comic(chars, panels).save(os.path.join(bot.config['savePath'], fname), quality=85)
-    API_KEY = api_key
-    image_path = os.path.join(bot.config['savePath'],fname)
-    headers = {'Authorization': 'Client-ID '+API_KEY}
-    fh = open(image_path, 'rb');
+    imgtpath = "imgtemp"
+    make_comic(chars, panels).save(os.path.join(imgtpath, fname), quality=85)
+    API_KEY = "df9c92f33223cd4"
+    image_path = os.path.join(imgtpath,fname)
+    headers = {'Authorization': 'Client-ID ' + API_KEY}
+    fh = open(image_path, 'rb')
     base64img = base64.b64encode(fh.read())
     url="https://api.imgur.com/3/upload.json"
     r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
-    print r.text
+    print(r.text)
     val=json.loads(r.text)
     return val['data']['link']
 
@@ -104,7 +116,7 @@ def rendertext(st, font, draw, pos):
         draw.text((pos[0], ch), s, font=font, fill=(0xff,0xff,0xff,0xff))
         ch += h
 
-def fitimg(img, (width, height)):
+def fitimg(img, width, height):
     scale1 = float(width) / img.size[0]
     scale2 = float(height) / img.size[1]
 
@@ -139,12 +151,12 @@ def make_comic(chars, panels):
     imgwidth = panelwidth
     imgheight = panelheight * len(panels)
 
-    bg = Image.open("backgrounds/beach-paradise-beach-desktop.jpg")
+    bg = Image.open("backgrounds/Backdrop.jpg")
 
     im = Image.new("RGBA", (imgwidth, imgheight), (0xff, 0xff, 0xff, 0xff))
-    font = ImageFont.truetype("plugins/COMICBD.TTF", 14)
+    font = ImageFont.truetype("plugins/FiraSansLight.ttf", 18)
 
-    for i in xrange(len(panels)):
+    for i in range(len(panels)):
         pim = Image.new("RGBA", (panelwidth, panelheight), (0xff, 0xff, 0xff, 0xff))
         pim.paste(bg, (0, 0))
         draw = ImageDraw.Draw(pim)
@@ -161,11 +173,11 @@ def make_comic(chars, panels):
             texth += st2h + 10 + 5
 
         maxch = panelheight - texth
-        im1 = fitimg(charmap[panels[i][0][0]], (2*panelwidth/5.0-10, maxch))
+        im1 = fitimg(charmap[panels[i][0][0]], 2*panelwidth/5.0-10, maxch)
         pim.paste(im1, (10, panelheight-im1.size[1]), im1)
 
         if len(panels[i]) == 2:
-            im2 = fitimg(charmap[panels[i][1][0]], (2*panelwidth/5.0-10, maxch))
+            im2 = fitimg(charmap[panels[i][1][0]], 2*panelwidth/5.0-10, maxch)
             im2 = im2.transpose(Image.FLIP_LEFT_RIGHT)
             pim.paste(im2, (panelwidth-im2.size[0]-10, panelheight-im2.size[1]), im2)
 
