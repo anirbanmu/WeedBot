@@ -3,7 +3,6 @@
 from cloudbot import hook
 import os
 from random import shuffle
-import random
 from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
@@ -17,13 +16,13 @@ mcache = dict()
 
 @hook.on_start()
 def load_key(bot):
-    global dev_key
+    global api_key
     global background_file
-    dev_key = bot.config.get("api_keys", {}).get("imgur_client_id")
+    api_key = bot.config.get("api_keys", {}).get("imgur_client_id")
     background_file = bot.config.get("resources", {}).get("background")
 
 @hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
-def track(event, db, conn):
+def track(event, conn):
     key = (event.chan, conn.name)
     if key not in mcache:
         mcache[key] = []
@@ -69,19 +68,23 @@ def comic(conn, chan):
 
     print(repr(chars))
     print(repr(panels))
-    fname = ''.join([random.choice("fartpoo42069") for i in range(16)]) + ".jpg"
-    imgtpath = "imgtemp"
-    make_comic(chars, panels).save(os.path.join(imgtpath, fname), quality=85)
-    API_KEY = "df9c92f33223cd4"
-    image_path = os.path.join(imgtpath,fname)
-    headers = {'Authorization': 'Client-ID ' + API_KEY}
-    fh = open(image_path, 'rb')
-    base64img = base64.b64encode(fh.read())
-    url="https://api.imgur.com/3/upload.json"
-    r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
-    print(r.text)
-    val=json.loads(r.text)
-    return val['data']['link']
+
+    # Initialize a variable to store our image
+    image_comic = BytesIO()
+
+    # Save the completed composition to a PNG in memory
+    make_comic(chars, panels).save(image_comic, format="JPG", quality=85)
+
+    # Get API Key, upload the comic to imgur
+    headers = {'Authorization': 'Client-ID ' + api_key}
+    base64img = base64.b64encode(image_comic.getvalue())
+    url = "https://api.imgur.com/3/upload.json"
+    r = requests.post(url, data={'key': api_key, 'image':base64img,'title':'Weedbot Comic'},headers=headers,verify=False)
+    val = json.loads(r.text)
+    try:
+        return val['data']['link']
+    except KeyError:
+        return val['data']['error']
 
 
 def wrap(st, font, draw, width):
