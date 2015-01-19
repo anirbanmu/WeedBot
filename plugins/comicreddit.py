@@ -1,12 +1,12 @@
-from util import hook
+from cloudbot import hook
 import os
 from random import shuffle
-import random
 from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
 import praw
+from io import BytesIO
 
 
 def getObjectFromLink(r,url):
@@ -15,8 +15,20 @@ def getObjectFromLink(r,url):
         return obj
     else:
         return obj.comments[0]
-    
-@hook.api_key('imgur')
+
+@hook.on_start()
+def load_key(bot):
+    global api_key
+    global background_file
+    global font_file
+    global font_size
+    global buffer_size
+    api_key = bot.config.get("api_keys", {}).get("imgur_client_id")
+    background_file = bot.config.get("resources", {}).get("background")
+    font_file = bot.config.get("resources", {}).get("font")
+    font_size = bot.config.get("resources", {}).get("font_size")
+    buffer_size = bot.config.get("resources", {}).get("buffer_size")
+
 @hook.command("comicreddit")
 def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     #print os.getcwd()
@@ -64,21 +76,26 @@ def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
     del comments
     del r
     del x
-    print repr(chars)
-    print repr(panels)
 
-    fname = ''.join([random.choice("fartpoo42069") for i in range(16)]) + ".jpg"
+    print(repr(chars))
+    print(repr(panels))
 
-    make_comic(chars, panels).save(os.path.join(bot.config['savePath'], fname), quality=85)
-    API_KEY = api_key
-    image_path = os.path.join(bot.config['savePath'],fname)
-    headers = {'Authorization': 'Client-ID '+API_KEY}
-    fh = open(image_path, 'rb');
-    base64img = base64.b64encode(fh.read())
-    url="https://api.imgur.com/3/upload.json"
-    r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
-    val=json.loads(r.text)
-    return val['data']['link']
+    # Initialize a variable to store our image
+    image_comic = BytesIO()
+
+    # Save the completed composition to a JPEG in memory
+    make_comic(chars, panels).save(image_comic, format="JPEG", quality=85)
+
+    # Get API Key, upload the comic to imgur
+    headers = {'Authorization': 'Client-ID ' + api_key}
+    base64img = base64.b64encode(image_comic.getvalue())
+    url = "https://api.imgur.com/3/upload.json"
+    r = requests.post(url, data={'key': api_key, 'image':base64img,'title':'Weedbot Comic'},headers=headers,verify=False)
+    val = json.loads(r.text)
+    try:
+        return val['data']['link']
+    except KeyError:
+        return val['data']['error']
 
 
 def wrap(st, font, draw, width):
