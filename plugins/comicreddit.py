@@ -82,7 +82,6 @@ def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
 
 
 def wrap(st, font, draw, width):
-    #print "\n\n\n"
     st = st.split()
     mw = 0
     mh = 0
@@ -90,8 +89,6 @@ def wrap(st, font, draw, width):
 
     while len(st) > 0:
         s = 1
-        #print st
-        #import pdb; pdb.set_trace()
         while True and s < len(st):
             w, h = draw.textsize(" ".join(st[:s]), font=font)
             if w > width:
@@ -107,8 +104,6 @@ def wrap(st, font, draw, width):
         mw = max(mw, w)
         mh += h
         ret.append(" ".join(st[:s]))
-        #print st[:s]
-        #print
         st = st[s:]
 
     return (ret, (mw, mh))
@@ -120,7 +115,7 @@ def rendertext(st, font, draw, pos):
         draw.text((pos[0], ch), s, font=font, fill=(0xff,0xff,0xff,0xff))
         ch += h
 
-def fitimg(img, (width, height)):
+def fitimg(img, width, height):
     scale1 = float(width) / img.size[0]
     scale2 = float(height) / img.size[1]
 
