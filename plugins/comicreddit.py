@@ -23,24 +23,24 @@ def load_key(bot):
     global font_file
     global font_size
     global buffer_size
+    global reddit_user
+    global reddit_password
     api_key = bot.config.get("api_keys", {}).get("imgur_client_id")
     background_file = bot.config.get("resources", {}).get("background")
     font_file = bot.config.get("resources", {}).get("font")
     font_size = bot.config.get("resources", {}).get("font_size")
     buffer_size = bot.config.get("resources", {}).get("buffer_size")
+    reddit_user = bot.config.get("reddit_login", {}).get("username")
+    reddit_password = bot.config.get("reddit_login", {}).get("password")
 
 @hook.command("comicreddit")
-def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
-    #print os.getcwd()
-    
-    
+def comicreddit(text, bot):
     r = praw.Reddit(user_agent='redditComicBot')
-    r.login(bot.config['redditUsername'],bot.config['redditPassword'])
+    r.login(reddit_user, reddit_password)
     
-    if len(paraml) == 0:
+    if len(text) == 0:
         return "Please request a URL"
-    tmp=paraml
-    x= getObjectFromLink(r,paraml)
+    x= getObjectFromLink(r,text)
     #print tmp
     #print x
     comments=[x]
@@ -53,7 +53,7 @@ def comicreddot(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
         x=x.replies[0]
         comments+=[x]
     
-    print comments
+    print(comments)
     sp = 0
     chars = set()
 
