@@ -8,7 +8,6 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
-import time
 from datetime import datetime, timedelta
 
 from cloudbot.event import EventType
@@ -28,7 +27,7 @@ def track(event, db, conn):
 
 
 @hook.command("comic")
-def comic(text, conn, chan):
+def comic(conn, chan):
     text = chan
     msgs = mcache[(text, conn.name)]
     sp = 0
