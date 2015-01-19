@@ -1,4 +1,7 @@
 {
+  "resources": {
+    "background": "backgrounds/beach-paradise-beach-desktop.jpg"
+  },
   "connections": [
     {
       "name": "Snoonet",

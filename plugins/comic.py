@@ -15,6 +15,13 @@ from cloudbot.event import EventType
 
 mcache = dict()
 
+@hook.on_start()
+def load_key(bot):
+    global dev_key
+    global background_file
+    dev_key = bot.config.get("api_keys", {}).get("imgur_client_id")
+    background_file = bot.config.get("resources", {}).get("background")
+
 @hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
 def track(event, db, conn):
     key = (event.chan, conn.name)
