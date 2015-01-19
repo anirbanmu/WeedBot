@@ -60,7 +60,7 @@
         }
       },
       "plugins": {},
-      "command_prefix": "."
+      "command_prefix": "!"
     }
   ],
   "reddit_login": {
