@@ -1,3 +1,5 @@
+# WeedBotRefresh's comicreddit.py - based on nekosune's comicreddit.py
+
 from cloudbot import hook
 import os
 from random import shuffle
@@ -9,12 +11,13 @@ import praw
 from io import BytesIO
 
 
-def getobjectfromlink(r,url):
-    obj=praw.objects.Submission.from_url(r, url)
-    if len(url.split('/'))==6:
+def getobjectfromlink(r, url):
+    obj = praw.objects.Submission.from_url(r, url)
+    if len(url.split('/')) == 6:
         return obj
     else:
         return obj.comments[0]
+
 
 @hook.on_start()
 def load_key(bot):
@@ -33,19 +36,20 @@ def load_key(bot):
     reddit_user = bot.config.get("reddit_login", {}).get("username")
     reddit_password = bot.config.get("reddit_login", {}).get("password")
 
+
 @hook.command("comicreddit")
-def comicreddit(text, bot):
+def comicreddit(text):
     r = praw.Reddit(user_agent='redditComicBot')
     r.login(reddit_user, reddit_password)
     
     if len(text) == 0:
         return "Please request a URL"
-    x = getobjectfromlink(r,text)
+    x = getobjectfromlink(r, text)
     comments = [x]
     
     cnt = 0
     while cnt < 10:
-        if(len(x.replies) == 0):
+        if len(x.replies) == 0:
             break
         x = x.replies[0]
         comments += [x]
@@ -85,7 +89,7 @@ def comicreddit(text, bot):
     headers = {'Authorization': 'Client-ID ' + api_key}
     base64img = base64.b64encode(image_comic.getvalue())
     url = "https://api.imgur.com/3/upload.json"
-    r = requests.post(url, data={'key': api_key, 'image':base64img,'title':'Weedbot Comic'},headers=headers,verify=False)
+    r = requests.post(url, data={'key': api_key, 'image': base64img, 'title': 'Weedbot Comic'}, headers=headers, verify=False)
     val = json.loads(r.text)
     try:
         return val['data']['link']
@@ -120,12 +124,14 @@ def wrap(st, font, draw, width):
 
     return ret, (mw, mh)
 
+
 def rendertext(st, font, draw, pos):
     ch = pos[1]
     for s in st:
         w, h = draw.textsize(s, font=font)
-        draw.text((pos[0], ch), s, font=font, fill=(0xff,0xff,0xff,0xff))
+        draw.text((pos[0], ch), s, font=font, fill=(0xff, 0xff, 0xff, 0xff))
         ch += h
+
 
 def fitimg(img, width, height):
     scale1 = float(width) / img.size[0]
@@ -140,6 +146,7 @@ def fitimg(img, width, height):
         l = l1
 
     return img.resize((int(l[0]), int(l[1])), Image.ANTIALIAS)
+
 
 def make_comic(chars, panels):
     panelheight = 300
