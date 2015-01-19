@@ -3,7 +3,9 @@
     "background": "backgrounds/beach-paradise-beach-desktop.jpg",
     "font": "fonts/comic.ttf",
     "font_size": 14,
-    "buffer_size": 30
+    "buffer_size": 30,
+    "private_save_path": "/var/tmp/pathhere",
+    "private_url_prefix": "http://example.com/myprefix"
   },
   "connections": [
     {
