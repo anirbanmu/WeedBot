@@ -1,4 +1,4 @@
-# WeedBot Refresh's comic.py - based on RoboCop 2's comic.py
+# WeedBotRefresh's comic.py - based on nekosune's comic.py
 
 from cloudbot import hook
 import os
@@ -8,7 +8,8 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
+from io import BytesIO
 
 from cloudbot.event import EventType
 
