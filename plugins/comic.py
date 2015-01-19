@@ -85,7 +85,6 @@ def comic(conn, chan):
 
 
 def wrap(st, font, draw, width):
-    #print "\n\n\n"
     st = st.split()
     mw = 0
     mh = 0
@@ -93,8 +92,6 @@ def wrap(st, font, draw, width):
 
     while len(st) > 0:
         s = 1
-        #print st
-        #import pdb; pdb.set_trace()
         while True and s < len(st):
             w, h = draw.textsize(" ".join(st[:s]), font=font)
             if w > width:
@@ -110,8 +107,6 @@ def wrap(st, font, draw, width):
         mw = max(mw, w)
         mh += h
         ret.append(" ".join(st[:s]))
-        #print st[:s]
-        #print
         st = st[s:]
 
     return (ret, (mw, mh))
@@ -138,8 +133,6 @@ def fitimg(img, width, height):
     return img.resize((int(l[0]), int(l[1])), Image.ANTIALIAS)
 
 def make_comic(chars, panels):
-    #filenames = os.listdir(os.path.join(os.getcwd(), 'chars'))
-
     panelheight = 300
     panelwidth = 450
 
@@ -152,13 +145,10 @@ def make_comic(chars, panels):
     for ch, f in chars:
         charmap[ch] = Image.open(f)
 
-    #print charmap
-
-
     imgwidth = panelwidth
     imgheight = panelheight * len(panels)
 
-    bg = Image.open("backgrounds/Backdrop.jpg")
+    bg = Image.open(background_file)
 
     im = Image.new("RGBA", (imgwidth, imgheight), (0xff, 0xff, 0xff, 0xff))
     font = ImageFont.truetype("plugins/FiraSansLight.ttf", 18)
