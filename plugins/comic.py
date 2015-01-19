@@ -80,7 +80,7 @@ def comic(conn, chan):
     # Initialize a variable to store our image
     image_comic = BytesIO()
 
-    # Save the completed composition to a PNG in memory
+    # Save the completed composition to a JPEG in memory
     make_comic(chars, panels).save(image_comic, format="JPEG", quality=85)
 
     # Get API Key, upload the comic to imgur
