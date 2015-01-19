@@ -1,6 +1,9 @@
 {
   "resources": {
-    "background": "backgrounds/beach-paradise-beach-desktop.jpg"
+    "background": "backgrounds/beach-paradise-beach-desktop.jpg",
+    "font": "fonts/comic.ttf",
+    "font_size": 14,
+    "buffer_size": 30
   },
   "connections": [
     {

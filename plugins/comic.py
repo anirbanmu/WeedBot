@@ -18,8 +18,14 @@ mcache = dict()
 def load_key(bot):
     global api_key
     global background_file
+    global font_file
+    global font_size
+    global buffer_size
     api_key = bot.config.get("api_keys", {}).get("imgur_client_id")
     background_file = bot.config.get("resources", {}).get("background")
+    font_file = bot.config.get("resources", {}).get("font")
+    font_size = bot.config.get("resources", {}).get("font_size")
+    buffer_size = bot.config.get("resources", {}).get("buffer_size")
 
 @hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
 def track(event, conn):
@@ -29,7 +35,6 @@ def track(event, conn):
 
     value = (datetime.now(), event.nick, str(event.content))
     mcache[key].append(value)
-    buffer_size = 30
     mcache[key] = mcache[key][-1*buffer_size:]
 
 
@@ -154,7 +159,7 @@ def make_comic(chars, panels):
     bg = Image.open(background_file)
 
     im = Image.new("RGBA", (imgwidth, imgheight), (0xff, 0xff, 0xff, 0xff))
-    font = ImageFont.truetype("plugins/FiraSansLight.ttf", 18)
+    font = ImageFont.truetype(font_file, font_size)
 
     for i in range(len(panels)):
         pim = Image.new("RGBA", (panelwidth, panelheight), (0xff, 0xff, 0xff, 0xff))
