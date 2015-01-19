@@ -11,6 +11,7 @@ from cloudbot.event import EventType
 
 mcache = dict()
 
+
 @hook.on_start()
 def load_key(bot):
     global background_file
@@ -25,6 +26,7 @@ def load_key(bot):
     buffer_size = bot.config.get("resources", {}).get("buffer_size")
     private_save_path = bot.config.get("resources", {}).get("private_save_path")
     private_url_prefix = bot.config.get("resources", {}).get("private_url_prefix")
+
 
 @hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
 def track(event, conn):
@@ -67,8 +69,8 @@ def comic(conn, chan):
             ctcp = msg.split('\x01', 2)[1].split(' ', 1)
             if len(ctcp) == 1:
                 ctcp += ['']
-            if ctcp[0]=='ACTION':
-                msg='*'+ctcp[1]+'*'
+            if ctcp[0] == 'ACTION':
+                msg = '*'+ctcp[1]+'*'
         panel.append((char, msg))
 
     panels.append(panel)
@@ -82,6 +84,7 @@ def comic(conn, chan):
 
     # Return link to private URL location
     return private_url_prefix + fname
+
 
 def wrap(st, font, draw, width):
     st = st.split()
@@ -99,7 +102,7 @@ def wrap(st, font, draw, width):
             else:
                 s += 1
 
-        if s == 0 and len(st) > 0: # we've hit a case where the current line is wider than the screen
+        if s == 0 and len(st) > 0:  # we've hit a case where the current line is wider than the screen
             s = 1
 
         w, h = draw.textsize(" ".join(st[:s]), font=font)
@@ -108,14 +111,16 @@ def wrap(st, font, draw, width):
         ret.append(" ".join(st[:s]))
         st = st[s:]
 
-    return (ret, (mw, mh))
+    return ret, (mw, mh)
+
 
 def rendertext(st, font, draw, pos):
     ch = pos[1]
     for s in st:
         w, h = draw.textsize(s, font=font)
-        draw.text((pos[0], ch), s, font=font, fill=(0xff,0xff,0xff,0xff))
+        draw.text((pos[0], ch), s, font=font, fill=(0xff, 0xff, 0xff, 0xff))
         ch += h
+
 
 def fitimg(img, width, height):
     scale1 = float(width) / img.size[0]
@@ -130,6 +135,7 @@ def fitimg(img, width, height):
         l = l1
 
     return img.resize((int(l[0]), int(l[1])), Image.ANTIALIAS)
+
 
 def make_comic(chars, panels):
     panelheight = 300
