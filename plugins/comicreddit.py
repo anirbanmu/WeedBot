@@ -9,7 +9,7 @@ import praw
 from io import BytesIO
 
 
-def getObjectFromLink(r,url):
+def getobjectfromlink(r,url):
     obj=praw.objects.Submission.from_url(r, url)
     if len(url.split('/'))==6:
         return obj
@@ -40,26 +40,21 @@ def comicreddit(text, bot):
     
     if len(text) == 0:
         return "Please request a URL"
-    x= getObjectFromLink(r,text)
-    #print tmp
-    #print x
-    comments=[x]
+    x = getobjectfromlink(r,text)
+    comments = [x]
     
-    cnt=0
+    cnt = 0
     while cnt < 10:
-        #print x
-        if(len(x.replies)==0):
+        if(len(x.replies) == 0):
             break
-        x=x.replies[0]
-        comments+=[x]
+        x = x.replies[0]
+        comments += [x]
     
     print(comments)
-    sp = 0
     chars = set()
 
     for comment in comments:
         chars.add(comment.author.name)
-    #print sp, chars
 
     panels = []
     panel = []
@@ -114,7 +109,7 @@ def wrap(st, font, draw, width):
             else:
                 s += 1
 
-        if s == 0 and len(st) > 0: # we've hit a case where the current line is wider than the screen
+        if s == 0 and len(st) > 0:  # we've hit a case where the current line is wider than the screen
             s = 1
 
         w, h = draw.textsize(" ".join(st[:s]), font=font)
@@ -123,7 +118,7 @@ def wrap(st, font, draw, width):
         ret.append(" ".join(st[:s]))
         st = st[s:]
 
-    return (ret, (mw, mh))
+    return ret, (mw, mh)
 
 def rendertext(st, font, draw, pos):
     ch = pos[1]
