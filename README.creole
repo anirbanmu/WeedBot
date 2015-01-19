@@ -16,7 +16,7 @@ WeedbotRefresh is a fork of the original Weedbot, redesigned to run on Python 3 
 * Easy plugin development with automatic reloading and a simple hooking API.
 
 ==Requirements==
-WeedbotRefresh runs on Python 3. Many of the plugins require [[http://codespeak.net/lxml/|lxml]]. It is developed on Mac OS X Yosemite 10.10 with Python 3.4.0. It is fully compatible with Linux and Windows platforms.
+WeedbotRefresh runs on Python 3. It is developed on Mac OS X Yosemite 10.10 with Python 3.4.0. It is fully compatible with Linux and Windows platforms.
 It also requires:
 * PIL
 * Requests
