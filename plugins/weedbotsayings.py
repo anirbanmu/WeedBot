@@ -14,56 +14,56 @@ gi = "ï½·ï¾€ï¾œã‚¡*ï½¥ã‚œï¾Ÿï½¥*:.ï½¡..ï½¡.:*ï
 
 
 @hook.regex(re.compile(r'cum', re.I))
-def cum(bot):
-    bot.reply(cs)
+def cum(message):
+    message(cs)
 
 
 @hook.regex(re.compile(r'mitten', re.I))
-def mitten(bot):
-    bot.reply(ms)
+def mitten(message):
+    message(ms)
 
 
 @hook.regex(re.compile(r'crap', re.I))
-def crap(bot):
-    bot.reply(cp)
+def crap(message):
+    message(cp)
 
 
 @hook.regex(re.compile(r'ass', re.I))
-def ass(bot):
-    bot.reply(cp)
+def ass(message):
+    message(cp)
 
 
 @hook.regex(re.compile(r'\\bftw\\b', re.I))
-def ftw(bot):
-    bot.reply(ft)
+def ftw(message):
+    message(ft)
 
 
 @hook.regex(re.compile(r'\\bown(s|ed)?\\b', re.I))
-def owns(bot):
+def owns(message):
     ons = "owns " * random.randint(1, 3) + "OWNS " * random.randint(1, 3) + "o-(' 'Q)"
-    bot.reply(ons)
+    message(ons)
 
 
 @hook.regex(re.compile(r'\\bapple\\b', re.I))
-def apple(bot):
-    bot.reply(ap)
+def apple(message):
+    message(ap)
 
 
 @hook.regex(re.compile(r'weedbot', re.I))
-def weedbotname(bot):
-    bot.reply(random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"]))
+def weedbotname(message):
+    message(random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"]))
 
 
 @hook.regex(re.compile(r'\\bdad\\b', re.I))
-def dad(bot):
-    bot.reply(da)
+def dad(message):
+    message(da)
 
 
 @hook.regex(re.compile(r'\\b(mad|angry)\\b', re.I))
-def mad(bot):
-    bot.reply(ta)
+def mad(message):
+    message(ta)
 
 
 @hook.regex(re.compile(r'\\bgirl\\b', re.I))
-def girl(bot):
-    bot.reply(gi)
+def girl(message):
+    message(gi)
