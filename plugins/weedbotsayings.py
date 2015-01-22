@@ -13,7 +13,7 @@ da = "Î¾ ãƒ»_>ãƒ»ï¼‰don't touch dad's diskettes"
 ta = "(â•¯Â°â–¡Â°ï¼‰â•¯ï¸µ â”»â”â”» i'm so fuckin mad right now"
 gi = "ï½·ï¾€ï¾œã‚¡*ï½¥ã‚œï¾Ÿï½¥*:.ï½¡..ï½¡.:*ï½¥ã‚œ(nâ€˜âˆ€â€˜)Î·ï¾Ÿï½¥*:.ï½¡. .ï½¡.:*ï½¥ã‚œï¾Ÿï½¥* !!!!! oh my god i'm a girl!!!"
 
-randomness_const = 1
+randomness_const = 2
 
 @hook.regex(re.compile(r'cum', re.I))
 def cum(message):
