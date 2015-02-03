@@ -18,8 +18,8 @@
         "password": ""
       },
       "nick": "weedbot",
-      "user": "WeedBotRefresh",
-      "real_name": "WeedBotRefresh <https://github.com/FurCode/WeedBotRefresh/>",
+      "user": "WeedBot",
+      "real_name": "WeedBot <https://github.com/nekosune/WeedBot/>",
       "avoid_notices": false,
       "channels": [
         "#test",
