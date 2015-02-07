@@ -1,33 +1,62 @@
-from util import hook
+# WeedBotRefresh's comic.py - based on nekosune's comic.py
+
+from cloudbot import hook
 import os
 from random import shuffle
-import random
 from PIL import Image, ImageDraw, ImageFont
 import base64
 import requests
 import json
+from datetime import datetime
+from io import BytesIO
+
+from cloudbot.event import EventType
+
+mcache = dict()
 
 
-@hook.api_key('imgur')
+@hook.on_start()
+def load_key(bot):
+    global api_key
+    global background_file
+    global font_file
+    global font_size
+    global buffer_size
+    api_key = bot.config.get("api_keys", {}).get("imgur_client_id")
+    background_file = bot.config.get("resources", {}).get("background")
+    font_file = bot.config.get("resources", {}).get("font")
+    font_size = bot.config.get("resources", {}).get("font_size")
+    buffer_size = bot.config.get("resources", {}).get("buffer_size")
+
+
+@hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
+def track(event, conn):
+    key = (event.chan, conn.name)
+    if key not in mcache:
+        mcache[key] = []
+
+    value = (datetime.now(), event.nick, str(event.content))
+    mcache[key].append(value)
+    mcache[key] = mcache[key][-1*buffer_size:]
+
+
 @hook.command("comic")
-def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
-    #print os.getcwd()
-    #Removed for channel leaks
-    #if len(paraml) == 0:
-        #paraml = input.chan
-    paraml = input.chan
-    msgs = bot.mcache[(paraml,conn)]
+def comic(conn, chan):
+    text = chan
+    try:
+        msgs = mcache[(text, conn.name)]
+    except KeyError:
+        return "Not Enough Messages."
     sp = 0
     chars = set()
 
-    for i in xrange(len(msgs)-1, 0, -1):
+    for i in range(len(msgs)-1, 0, -1):
         sp += 1
         diff = msgs[i][0] - msgs[i-1][0]
         chars.add(msgs[i][1])
         if sp > 10 or diff.total_seconds() > 120 or len(chars) > 3:
             break
 
-    #print sp, chars
     msgs = msgs[-1*sp:]
 
     panels = []
@@ -41,32 +70,34 @@ def comic(paraml, input=None, db=None, bot=None, conn=None,api_key=None):
             ctcp = msg.split('\x01', 2)[1].split(' ', 1)
             if len(ctcp) == 1:
                 ctcp += ['']
-            if ctcp[0]=='ACTION':
-                msg='*'+ctcp[1]+'*'
+            if ctcp[0] == 'ACTION':
+                msg = '*'+ctcp[1]+'*'
         panel.append((char, msg))
 
     panels.append(panel)
 
-    print repr(chars)
-    print repr(panels)
+    print(repr(chars))
+    print(repr(panels))
 
-    fname = ''.join([random.choice("fartpoo42069") for i in range(16)]) + ".jpg"
+    # Initialize a variable to store our image
+    image_comic = BytesIO()
 
-    make_comic(chars, panels).save(os.path.join(bot.config['savePath'], fname), quality=85)
-    API_KEY = api_key
-    image_path = os.path.join(bot.config['savePath'],fname)
-    headers = {'Authorization': 'Client-ID '+API_KEY}
-    fh = open(image_path, 'rb');
-    base64img = base64.b64encode(fh.read())
-    url="https://api.imgur.com/3/upload.json"
-    r = requests.post(url, data={'key': API_KEY, 'image':base64img,'title':'apitest'},headers=headers,verify=False)
-    print r.text
-    val=json.loads(r.text)
-    return val['data']['link']
+    # Save the completed composition to a JPEG in memory
+    make_comic(chars, panels).save(image_comic, format="JPEG", quality=85)
+
+    # Get API Key, upload the comic to imgur
+    headers = {'Authorization': 'Client-ID ' + api_key}
+    base64img = base64.b64encode(image_comic.getvalue())
+    url = "https://api.imgur.com/3/upload.json"
+    r = requests.post(url, data={'key': api_key, 'image': base64img, 'title': 'Weedbot Comic'}, headers=headers, verify=False)
+    val = json.loads(r.text)
+    try:
+        return val['data']['link']
+    except KeyError:
+        return val['data']['error']
 
 
 def wrap(st, font, draw, width):
-    #print "\n\n\n"
     st = st.split()
     mw = 0
     mh = 0
@@ -74,8 +105,6 @@ def wrap(st, font, draw, width):
 
     while len(st) > 0:
         s = 1
-        #print st
-        #import pdb; pdb.set_trace()
         while True and s < len(st):
             w, h = draw.textsize(" ".join(st[:s]), font=font)
             if w > width:
@@ -84,27 +113,27 @@ def wrap(st, font, draw, width):
             else:
                 s += 1
 
-        if s == 0 and len(st) > 0: # we've hit a case where the current line is wider than the screen
+        if s == 0 and len(st) > 0:  # we've hit a case where the current line is wider than the screen
             s = 1
 
         w, h = draw.textsize(" ".join(st[:s]), font=font)
         mw = max(mw, w)
         mh += h
         ret.append(" ".join(st[:s]))
-        #print st[:s]
-        #print
         st = st[s:]
 
-    return (ret, (mw, mh))
+    return ret, (mw, mh)
+
 
 def rendertext(st, font, draw, pos):
     ch = pos[1]
     for s in st:
         w, h = draw.textsize(s, font=font)
-        draw.text((pos[0], ch), s, font=font, fill=(0xff,0xff,0xff,0xff))
+        draw.text((pos[0], ch), s, font=font, fill=(0xff, 0xff, 0xff, 0xff))
         ch += h
 
-def fitimg(img, (width, height)):
+
+def fitimg(img, width, height):
     scale1 = float(width) / img.size[0]
     scale2 = float(height) / img.size[1]
 
@@ -118,9 +147,8 @@ def fitimg(img, (width, height)):
 
     return img.resize((int(l[0]), int(l[1])), Image.ANTIALIAS)
 
-def make_comic(chars, panels):
-    #filenames = os.listdir(os.path.join(os.getcwd(), 'chars'))
 
+def make_comic(chars, panels):
     panelheight = 300
     panelwidth = 450
 
@@ -133,18 +161,15 @@ def make_comic(chars, panels):
     for ch, f in chars:
         charmap[ch] = Image.open(f)
 
-    #print charmap
-
-
     imgwidth = panelwidth
     imgheight = panelheight * len(panels)
 
-    bg = Image.open("backgrounds/beach-paradise-beach-desktop.jpg")
+    bg = Image.open(background_file)
 
     im = Image.new("RGBA", (imgwidth, imgheight), (0xff, 0xff, 0xff, 0xff))
-    font = ImageFont.truetype("plugins/COMICBD.TTF", 14)
+    font = ImageFont.truetype(font_file, font_size)
 
-    for i in xrange(len(panels)):
+    for i in range(len(panels)):
         pim = Image.new("RGBA", (panelwidth, panelheight), (0xff, 0xff, 0xff, 0xff))
         pim.paste(bg, (0, 0))
         draw = ImageDraw.Draw(pim)
@@ -161,11 +186,11 @@ def make_comic(chars, panels):
             texth += st2h + 10 + 5
 
         maxch = panelheight - texth
-        im1 = fitimg(charmap[panels[i][0][0]], (2*panelwidth/5.0-10, maxch))
+        im1 = fitimg(charmap[panels[i][0][0]], 2*panelwidth/5.0-10, maxch)
         pim.paste(im1, (10, panelheight-im1.size[1]), im1)
 
         if len(panels[i]) == 2:
-            im2 = fitimg(charmap[panels[i][1][0]], (2*panelwidth/5.0-10, maxch))
+            im2 = fitimg(charmap[panels[i][1][0]], 2*panelwidth/5.0-10, maxch)
             im2 = im2.transpose(Image.FLIP_LEFT_RIGHT)
             pim.paste(im2, (panelwidth-im2.size[0]-10, panelheight-im2.size[1]), im2)
 
