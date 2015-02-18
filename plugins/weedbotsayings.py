@@ -4,15 +4,23 @@ import random
 from cloudbot import hook
 import re
 
-cs = "( .__.) . o O ( cum )"
-ms = "( ï¾Ÿ ãƒ®ï¾Ÿ)ã€€ï¼­ï¼©ï¼´ï¼¯ï¼® ï¼§ï¼¡ ï¼³ï¼µï¼«ï¼©ï¼ï¼ï¼ï¼"
-cp = "( ãƒ»Ï‰ãƒ») . o O ( crap ass )"
-ft = "ãƒ¾(Â´â–¡ï½€* )ãƒŽ ftw ãƒ¾(@ã‚œâˆ‡ã‚œ@)ãƒŽ ftw o(â‰§âˆ‡â‰¦o) ftw (Â´âˆ‡ï¾‰ï½€*)ãƒŽ"
-ap = "( ï½¥à¸´Ð·ï½¥à¸´) apple basically makes the best computers.. heh"
-da = "Î¾ ãƒ»_>ãƒ»ï¼‰don't touch dad's diskettes"
-ta = "(â•¯Â°â–¡Â°ï¼‰â•¯ï¸µ â”»â”â”» i'm so fuckin mad right now"
-gi = "ï½·ï¾€ï¾œã‚¡*ï½¥ã‚œï¾Ÿï½¥*:.ï½¡..ï½¡.:*ï½¥ã‚œ(nâ€˜âˆ€â€˜)Î·ï¾Ÿï½¥*:.ï½¡. .ï½¡.:*ï½¥ã‚œï¾Ÿï½¥* !!!!! oh my god i'm a girl!!!"
-
+cs = unicode("I can take a 9-inch dildo up my butt, because I’m an adult and I solve my own problems", encoding="utf-8")
+ms = unicode("stop oppressing white people plz", encoding="utf-8")
+cp = unicode("(⊙︿⊙)  crap ass ", encoding="utf-8")
+ft = unicode("This seems like an appropriate time to tell you what my penis thinks", encoding="utf-8")
+ap = unicode("plz censor your slurs  \(@_@)/", encoding="utf=8")
+da = unicode("heh dae le skytheists?", encoding="utf-8")
+ta = unicode("I do not support this request.", encoding="utf-8")
+gi = unicode("I am laid low by the matriarchy!", encoding="utf-8")
+li = unicode("I know now I'll never have any flair again and I've come to terms with that.", encoding="utf-8")
+dong1 = unicode("ヽ༼ຈل͜ຈ༽ﾉ raise your dongers ヽ༼ຈل͜ຈ༽ﾉ", encoding="utf-8")
+dong2 = unicode("ヽ༼ຈل͜ຈ༽ﾉ WHAT DOESNT KILL ME ONLY MAKES ME DONGER ᕙ༼ຈل͜ຈ༽ᕗ", encoding="utf-8")
+dong3 = unicode("ヽ༼ຈل͜ຈ༽ﾉ ITS A HARD DONG LIFE ヽ༼ຈل͜ຈ༽ﾉ", encoding="utf-8")
+dong4 = unicode("ᕙ༼ຈل͜ຈ༽ᕗ. ʜᴀʀᴅᴇʀ,﻿ ʙᴇᴛᴛᴇʀ, ғᴀsᴛᴇʀ, ᴅᴏɴɢᴇʀ .ᕙ༼ຈل͜ຈ༽ᕗ", encoding="utf-8")
+dong5 = unicode("work it ᕙ༼ຈل͜ຈ༽ᕗ harder make it (ง •̀_•́)ง better do it ᕦ༼ຈل͜ຈ༽ᕤ faster raise ur ヽ༼ຈل͜ຈ༽ﾉ donger", encoding="utf-8")
+dong6 = unicode("ᕦ༼ຈل͜ຈ༽ᕤ ＤＯ ＹＯＵ ＥＶＥＮ ＤＯＮＧ? ᕦ༼ຈل͜ຈ༽ᕤ", encoding="utf-8")
+dong7 = unicode("ง ͠ ͠° ͟ل͜ ͡°)ง sᴏᴜɴᴅs ᴅᴏɴɢᴇʀᴏᴜs... ɪᴍ ɪɴ (ง ͠ ͠° ͟ل͜ ͡°)ง", encoding="utf-8")
+gg = unicode("actually, its about ethics in games journalism", encoding="utf-8")
 randomness_const = 2
 
 @hook.regex(re.compile(r'cum', re.I))
