@@ -30,13 +30,14 @@ def load_key(bot):
 
 @hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
 def track(event, conn):
-    key = (event.chan, conn.name)
-    if key not in mcache:
-        mcache[key] = []
+    if str(event.content) != "!comicnoup":
+        key = (event.chan, conn.name)
+        if key not in mcache:
+            mcache[key] = []
 
-    value = (datetime.now(), event.nick, str(event.content))
-    mcache[key].append(value)
-    mcache[key] = mcache[key][-1*buffer_size:]
+        value = (datetime.now(), event.nick, str(event.content))
+        mcache[key].append(value)
+        mcache[key] = mcache[key][-1*buffer_size:]
 
 
 @hook.command("comicnoup")
