@@ -17,66 +17,66 @@ randomness_const = 2
 
 @hook.regex(re.compile(r'cum', re.I))
 def cum(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(cs)
 
 
 @hook.regex(re.compile(r'mitten', re.I))
 def mitten(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(ms)
 
 
 @hook.regex(re.compile(r'crap', re.I))
 def crap(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(cp)
 
 
 @hook.regex(re.compile(r'ass', re.I))
 def ass(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(cp)
 
 
 @hook.regex(re.compile(r'\\bftw\\b', re.I))
 def ftw(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(ft)
 
 
 @hook.regex(re.compile(r'\\bown(s|ed)?\\b', re.I))
 def owns(message):
     ons = "owns " * random.randint(1, 3) + "OWNS " * random.randint(1, 3) + "o-(' 'Q)"
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(ons)
 
 
 @hook.regex(re.compile(r'\\bapple\\b', re.I))
 def apple(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(ap)
 
 
 @hook.regex(re.compile(r'weedbot', re.I))
 def weedbotname(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(random.choice([":D", "hi!", "weed", "gotta love me!", "guess who has a boner", "weeeeeeed", "weeeeeeeeeeeeeeeeed"]))
 
 
 @hook.regex(re.compile(r'\\bdad\\b', re.I))
 def dad(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(da)
 
 
 @hook.regex(re.compile(r'\\b(mad|angry)\\b', re.I))
 def mad(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(ta)
 
 
 @hook.regex(re.compile(r'\\bgirl\\b', re.I))
 def girl(message):
-    if random.randrange(1,10+1) >= randomness_const:
+    if random.randrange(1,10+1) <= randomness_const:
         message(gi)

@@ -19,7 +19,7 @@
       },
       "nick": "weedbot",
       "user": "WeedBot",
-      "real_name": "WeedBot <https://github.com/nekosune/WeedBot/>",
+      "realname": "WeedBot <https://github.com/nekosune/WeedBot/>",
       "avoid_notices": false,
       "channels": [
         "#test",
